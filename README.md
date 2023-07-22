@@ -10,9 +10,9 @@
 
 ## Backend development server
 - cd backend/GroceryShop
-- dotnet restore
-- dotnet build
-- dotnet run
+- `dotnet restore`
+- `dotnet build`
+- `dotnet run`
 
 ## Mock data or serve backend server
 You can choose between mock frontend data and served backend served. By default fronend application set up to backend server on http://localhost:5092, but if you don't want to run backend you can change chart service in `main.ts` file 
