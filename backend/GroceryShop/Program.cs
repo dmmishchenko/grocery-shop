@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Serilog.Sinks.SystemConsole;
+using Serilog.Sinks.SystemConsole; // Add this using directive
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +16,17 @@ builder.Services.AddControllers()
     {
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
+
+// Add CORS service and configure it to allow requests from http://localhost:4200
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 // Add Swagger services
 builder.Services.AddSwaggerGen(c =>
@@ -36,6 +47,9 @@ var app = builder.Build();
 
 // Use Serilog for logging (place it before other middleware)
 app.UseSerilogRequestLogging();
+
+// Enable CORS - place it before other middleware
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

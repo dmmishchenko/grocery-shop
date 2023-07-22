@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/stats")]
 public class ShopStatisticsController : ControllerBase
 {
     private const int MaxItemsLimit = 30;

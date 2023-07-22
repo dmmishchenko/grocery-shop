@@ -1,14 +1,19 @@
 <h4>Select date range</h4>
 <div class="panel-wrapper">
-  <div class="filters">
-    <form [formGroup]="range">
-      <input type="date" formControlName="start" />
-      <input type="date" formControlName="end" />
-    </form>
-
-    <button (click)="filterClicked()" [disabled]="isLoading">
-      {{ isLoading ? 'Loading...' : 'Filter' }}
-    </button>
+  <div>
+    <div class="filters">
+      <form [formGroup]="range">
+        <input type="date" formControlName="start" />
+        <input type="date" formControlName="end" />
+      </form>
+      <button (click)="filterClicked()" [disabled]="isLoading">
+        {{ isLoading ? 'Loading...' : 'Filter' }}
+      </button>
+    </div>
+    <div class="error-notifier" *ngIf="errorMessage">
+      <br />
+      <span>{{ errorMessage }}</span>
+    </div>
   </div>
   <aside *ngIf="lastSearch">
     Recent search:

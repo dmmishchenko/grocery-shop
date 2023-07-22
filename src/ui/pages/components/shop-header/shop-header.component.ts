@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output
+} from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { finalize } from 'rxjs'
 import { Maybe } from 'src/application/base/maybe'
@@ -29,13 +35,17 @@ export class ShopHeaderComponent {
   })
   public lastSearch: { start: Maybe<DateString>; end: Maybe<DateString> } | null = null
 
-  constructor(private readonly changeFilter: ChangeFilterDates) {}
+  constructor(
+    private readonly changeFilter: ChangeFilterDates,
+    private readonly cdr: ChangeDetectorRef
+  ) {}
 
   public filterClicked(): void {
     if (this.isLoading) {
       return
     }
     this.isLoading = true
+    this.errorMessage = ''
     const { start, end } = this.range.getRawValue()
     this.changeFilter
       .execute(start, end)
@@ -46,6 +56,7 @@ export class ShopHeaderComponent {
             start,
             end
           }
+          this.cdr.markForCheck()
         })
       )
       .subscribe({
@@ -53,7 +64,7 @@ export class ShopHeaderComponent {
           this.onStatisticsChanged.emit(res)
         },
         error: (err) => {
-          this.errorMessage = err
+          this.errorMessage = err.message
         }
       })
   }

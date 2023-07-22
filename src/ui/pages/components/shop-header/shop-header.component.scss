@@ -9,8 +9,12 @@ form {
   gap: 10px;
 }
 
-.panel-wrapper{
+.panel-wrapper {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+}
+
+.error-notifier {
+  color: red;
 }
