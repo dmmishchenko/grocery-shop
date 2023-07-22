@@ -44,6 +44,7 @@ Thumbs.db
 # .net
 /backend/GroceryShop/bin
 /backend/GroceryShop/obj
+/backend/GroceryShop/log*.txt
 *.log
 *.log.*
 *.nupkg

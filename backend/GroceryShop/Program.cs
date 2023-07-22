@@ -5,6 +5,8 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Sinks.SystemConsole;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,19 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
 });
 
+// Add Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console() // Add the Console sink to the Serilog configuration
+    .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+// Add Serilog's DiagnosticContext service to the dependency injection container
+builder.Services.AddSerilog();
+
 var app = builder.Build();
+
+// Use Serilog for logging (place it before other middleware)
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

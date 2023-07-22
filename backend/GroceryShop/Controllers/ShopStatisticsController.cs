@@ -8,28 +8,38 @@ public class ShopStatisticsController : ControllerBase
 {
     private const int MaxItemsLimit = 30;
 
+    private readonly ILogger<ShopStatisticsController> _logger;
+
+    public ShopStatisticsController(ILogger<ShopStatisticsController> logger)
+    {
+        _logger = logger;
+    }
+
     [HttpGet]
     public IActionResult Get(string from, string to)
     {
-        var random = new Random();
-        var shopStatistics = new List<ShopStatisticItem>();
+      // Log the request
+      _logger.LogInformation("Request received with From: {From}, To: {To}", from, to);
 
-        DateTime fromDate = DateTime.Parse(from);
-        DateTime toDate = DateTime.Parse(to);
+      var random = new Random();
+      var shopStatistics = new List<ShopStatisticItem>();
 
-        for (DateTime date = fromDate; date <= toDate && shopStatistics.Count < MaxItemsLimit; date = date.AddDays(1))
-        {
-            var item = new ShopStatisticItem
-            {
-                Date = date.ToString("yyyy-MM-dd"),
-                Income = random.Next(100, 1000),
-                Outcome = random.Next(50, 500),
-                ClearRevenue = random.Next(50, 200),
-            };
+      DateTime fromDate = DateTime.Parse(from);
+      DateTime toDate = DateTime.Parse(to);
 
-            shopStatistics.Add(item);
-        }
+      for (DateTime date = fromDate; date <= toDate && shopStatistics.Count < MaxItemsLimit; date = date.AddDays(1))
+      {
+          var item = new ShopStatisticItem
+          {
+              Date = date.ToString("yyyy-MM-dd"),
+              Income = random.Next(100, 1000),
+              Outcome = random.Next(50, 500),
+              ClearRevenue = random.Next(50, 200),
+          };
 
-        return Ok(shopStatistics);
+          shopStatistics.Add(item);
+      }
+
+      return Ok(shopStatistics);
     }
 }
