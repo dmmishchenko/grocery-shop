@@ -1,0 +1,8 @@
+<h4>Select date range</h4>
+<div class="filters">
+  <input type="date" value="2021-06-01" />
+  <input type="date" value="2021-12-31" />
+  <button (click)="filterClicked()" [disabled]="isLoading">
+    {{ isLoading ? 'Loading...' : 'Filter' }}
+  </button>
+</div>

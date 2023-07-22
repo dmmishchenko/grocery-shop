@@ -1,0 +1,12 @@
+<google-chart
+  *ngIf="chartData.length; else noData"
+  [data]="chartData"
+  [columns]="columnNames"
+  [options]="chartOptions"
+  [width]="chartWidth"
+  [height]="chartHeight"
+  [type]="chartType"
+  [dynamicResize]="true"
+></google-chart>
+
+<ng-template #noData> no data </ng-template>
