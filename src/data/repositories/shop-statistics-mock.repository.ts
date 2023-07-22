@@ -7,7 +7,7 @@ import { ShopStatistics } from 'src/domain/shop-statistics.interface'
 
 const MAX_ITEMS_PER_PAGE = 10
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ShopStatisticsMockRepository implements ShopStatisticsRepository {
   getStatistics(options: {
     from: Maybe<DateString>

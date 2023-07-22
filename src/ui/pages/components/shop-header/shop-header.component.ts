@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common'
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { finalize } from 'rxjs'
+import { Maybe } from 'src/application/base/maybe'
 import { ChangeFilterDates } from 'src/application/use-cases/change-filter-dates'
 import { DateString } from 'src/domain/date-string'
 import { ShopStatistics } from 'src/domain/shop-statistics.interface'
@@ -12,9 +13,9 @@ const END_DATE_INITIAL = '2021-12-31'
   selector: 'app-shop-header',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  providers: [],
   templateUrl: './shop-header.component.html',
   styleUrls: ['./shop-header.component.scss'],
+  providers: [ChangeFilterDates],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShopHeaderComponent {
@@ -26,6 +27,7 @@ export class ShopHeaderComponent {
     start: new FormControl<DateString>(START_DATE_INITIAL),
     end: new FormControl<DateString>(END_DATE_INITIAL)
   })
+  public lastSearch: { start: Maybe<DateString>; end: Maybe<DateString> } | null = null
 
   constructor(private readonly changeFilter: ChangeFilterDates) {}
 
@@ -40,6 +42,10 @@ export class ShopHeaderComponent {
       .pipe(
         finalize(() => {
           this.isLoading = false
+          this.lastSearch = {
+            start,
+            end
+          }
         })
       )
       .subscribe({

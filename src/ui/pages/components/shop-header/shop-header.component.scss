@@ -3,7 +3,14 @@
   padding-bottom: 10px;
 }
 
-.filters, form {
+.filters,
+form {
   display: flex;
   gap: 10px;
+}
+
+.panel-wrapper{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }

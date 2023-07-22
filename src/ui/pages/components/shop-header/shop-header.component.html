@@ -1,11 +1,20 @@
 <h4>Select date range</h4>
-<div class="filters">
-  <form [formGroup]="range">
-    <input type="date" formControlName="start" />
-    <input type="date" formControlName="end" />
-  </form>
+<div class="panel-wrapper">
+  <div class="filters">
+    <form [formGroup]="range">
+      <input type="date" formControlName="start" />
+      <input type="date" formControlName="end" />
+    </form>
 
-  <button (click)="filterClicked()" [disabled]="isLoading">
-    {{ isLoading ? 'Loading...' : 'Filter' }}
-  </button>
+    <button (click)="filterClicked()" [disabled]="isLoading">
+      {{ isLoading ? 'Loading...' : 'Filter' }}
+    </button>
+  </div>
+  <aside *ngIf="lastSearch">
+    Recent search:
+    <br />
+    start: <i> {{ lastSearch.start | date: 'dd.MM.YYYY' }} </i>
+    <br />
+    end: <i> {{ lastSearch.end | date: 'dd.MM.YYYY' }} </i>
+  </aside>
 </div>
