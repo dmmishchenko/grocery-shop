@@ -21,6 +21,17 @@ public class ShopStatisticsController : ControllerBase
       // Log the request
       _logger.LogInformation("Request received with From: {From}, To: {To}", from, to);
 
+      // Check if 'from' and 'to' parameters are valid and not empty
+      if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
+      {
+        string errorMessage = "Both 'from' and 'to' parameters are required.";
+        
+        // Log the error to Serilog
+        _logger.LogError(errorMessage);
+        // Return error response to the user
+        return BadRequest(new { Error = errorMessage });
+      }
+
       var random = new Random();
       var shopStatistics = new List<ShopStatisticItem>();
 
