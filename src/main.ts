@@ -1,7 +1,17 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import 'zone.js/dist/zone'
+import { Component } from '@angular/core'
+import { bootstrapApplication } from '@angular/platform-browser'
+import { provideRouter, RouterOutlet } from '@angular/router'
+import { routes } from './routes'
 
-import { AppModule } from './app/app.module';
+@Component({
+  selector: 'my-app',
+  standalone: true,
+  imports: [RouterOutlet],
+  template: ` <router-outlet></router-outlet> `
+})
+export class AppComponent {}
 
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [provideRouter(routes)]
+})
