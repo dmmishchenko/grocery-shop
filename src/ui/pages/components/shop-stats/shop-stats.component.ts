@@ -18,7 +18,7 @@ export class ShopStatsComponent implements OnInit {
   public chartType: ChartType = ChartType.LineChart
   public chartWidth: number = 0
   public chartHeight: number = 0
-  public chartData: Row[] = []
+  public chartData: Row[] | null = null
 
   constructor(private cdr: ChangeDetectorRef) {}
 

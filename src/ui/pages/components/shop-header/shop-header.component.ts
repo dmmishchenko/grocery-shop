@@ -3,8 +3,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { finalize } from 'rxjs'
 import { ChangeFilterDates } from 'src/application/use-cases/change-filter-dates'
+import { DateString } from 'src/domain/date-string'
 import { ShopStatistics } from 'src/domain/shop-statistics.interface'
 
+const START_DATE_INITIAL = '2021-06-01'
+const END_DATE_INITIAL = '2021-12-31'
 @Component({
   selector: 'app-shop-header',
   standalone: true,
@@ -20,8 +23,8 @@ export class ShopHeaderComponent {
   public isLoading: boolean = false
   public errorMessage: unknown
   public readonly range = new FormGroup({
-    start: new FormControl<Date | null>(new Date('2021-06-01')),
-    end: new FormControl<Date | null>(new Date('2021-12-31'))
+    start: new FormControl<DateString>(START_DATE_INITIAL),
+    end: new FormControl<DateString>(END_DATE_INITIAL)
   })
 
   constructor(private readonly changeFilter: ChangeFilterDates) {}
@@ -31,8 +34,9 @@ export class ShopHeaderComponent {
       return
     }
     this.isLoading = true
+    const { start, end } = this.range.getRawValue()
     this.changeFilter
-      .execute()
+      .execute(start, end)
       .pipe(
         finalize(() => {
           this.isLoading = false

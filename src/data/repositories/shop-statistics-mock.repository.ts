@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core'
 import { Observable, delay, of } from 'rxjs'
+import { Maybe } from 'src/application/base/maybe'
 import { ShopStatisticsRepository } from 'src/application/repositories/shop-statistics-repository'
 import { DateString } from 'src/domain/date-string'
 import { ShopStatistics } from 'src/domain/shop-statistics.interface'
 
+const MAX_ITEMS_PER_PAGE = 10
+
 @Injectable({ providedIn: 'root' })
 export class ShopStatisticsMockRepository implements ShopStatisticsRepository {
   getStatistics(options: {
-    from: DateString | undefined
-    to: DateString | undefined
+    from: Maybe<DateString>
+    to: Maybe<DateString>
   }): Observable<ShopStatistics[]> {
     const result = generateRandomData(options.from, options.to)
     return of(result).pipe(delay(1500))
@@ -20,10 +23,7 @@ function getRandomDate(fromDate: Date, toDate: Date): Date {
   const toTime = toDate.getTime()
   return new Date(fromTime + Math.random() * (toTime - fromTime))
 }
-function generateRandomData(
-  from: DateString | undefined,
-  to: DateString | undefined
-): ShopStatistics[] {
+function generateRandomData(from: Maybe<DateString>, to: Maybe<DateString>): ShopStatistics[] {
   const currentDate = new Date()
   const startDate = from
     ? new Date(from)
@@ -36,7 +36,7 @@ function generateRandomData(
   }
 
   const numberOfDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
-  const maxItems = Math.min(numberOfDays, 10)
+  const maxItems = Math.min(numberOfDays, MAX_ITEMS_PER_PAGE)
   const data: ShopStatistics[] = []
 
   for (let i = 0; i < maxItems; i++) {

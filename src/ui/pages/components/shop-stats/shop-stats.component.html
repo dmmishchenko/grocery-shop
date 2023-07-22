@@ -1,12 +1,21 @@
-<google-chart
-  *ngIf="chartData.length; else noData"
-  [data]="chartData"
-  [columns]="columnNames"
-  [options]="chartOptions"
-  [width]="chartWidth"
-  [height]="chartHeight"
-  [type]="chartType"
-  [dynamicResize]="true"
-></google-chart>
+<div [ngSwitch]="chartData">
+  <ng-container *ngSwitchCase="null">
+    <p>Press "filter" button</p>
+  </ng-container>
 
-<ng-template #noData> no data </ng-template>
+  <ng-container *ngSwitchCase="[]">
+    <p>The array is empty.</p>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <google-chart
+      [data]="chartData!"
+      [columns]="columnNames"
+      [options]="chartOptions"
+      [width]="chartWidth"
+      [height]="chartHeight"
+      [type]="chartType"
+      [dynamicResize]="true"
+    ></google-chart>
+  </ng-container>
+</div>
