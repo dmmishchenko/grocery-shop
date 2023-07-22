@@ -9,7 +9,7 @@
 - run `ng serve`
 
 ## Backend development server
-- cd backend/GroceryShop
+- `cd backend/GroceryShop`
 - `dotnet restore`
 - `dotnet build`
 - `dotnet run`
